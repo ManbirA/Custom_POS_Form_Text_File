@@ -1,5 +1,5 @@
 /*Manbir Arora
- * Date: May 30 2018
+ * Date: Sept 14 2018
  * Purpose: Control objects in a POS environment to which 
  * 	employees interacting with customers can input their orders for tracking purposes.
  * 	Create GUI which can be edited by people who have access the text files 
@@ -13,6 +13,7 @@
  * 	for the entire order. At the end of the order a 
  * "reciept" is printed using the serial monitor
  * 	Version : 1.5 
+ * 	Version : 1.6 -changes: Fixed bug where if text files were not formatted properly program still ran
  */
 import java.awt.Color;
 import java.awt.Dimension;

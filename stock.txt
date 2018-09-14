@@ -1,5 +1,5 @@
-Small Popcorn : 6.0 : 43
-Medium Popcorn : 6.75 : 45
+Small Popcorn : 6.0 : 41
+Medium Popcorn : 6.75 : 39
 Large Popcorn : 7.0 : 47
 Soda : 5.0 : 48
 Candy : 5.0 : 49
