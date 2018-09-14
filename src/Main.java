@@ -1,10 +1,18 @@
 /*Manbir Arora
  * Date: May 30 2018
- * Purpose: Control objects in a POS environment to which employees interacting with customers can input their orders using the create GUI
- * people able to access the text files can add new products with price and inventory numbers. Coupon codes can also be added with unique strings that can give certian percent off
- *.the text files can also be edited in order to add gift cards, their numbers and amounts in specific.Floats are also kept in track of cash transactions and can be accesed in the text files
- * Both gift cards and cash can be used in order to pay for the entire order. At the end of the order a "reciept" is printed using the serial monitor
- * Version : 1.5 
+ * Purpose: Control objects in a POS environment to which 
+ * 	employees interacting with customers can input their orders for tracking purposes.
+ * 	Create GUI which can be edited by people who have access the text files 
+ * 	allowing them to add new products with price and inventory numbers. 
+ *	Coupon codes can also be added with unique strings 
+ * 	that can give certain percent off. The text files can also
+ * 	be edited in order to add gift cards, their numbers and 
+ * 	amounts in specific. Floats and users are also kept in track of 
+ *  cash transactions and can be accessed in the text files
+ * 	Both gift cards and cash can be used in order to pay 
+ * 	for the entire order. At the end of the order a 
+ * "reciept" is printed using the serial monitor
+ * 	Version : 1.5 
  */
 import java.awt.Color;
 import java.awt.Dimension;
@@ -64,13 +72,14 @@ public class Main {
 	static double sumTemp = 0;
 	static double amountInCard = 0;
 	static boolean giftCardUsed = false;
+	static boolean loadingCorrect = true;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) { 
 
-		SwingUtilities.invokeLater(new Runnable() {						//Method to run the Gui class when main is run
+		SwingUtilities.invokeLater(new Runnable() {						//Method to run the GUI class when main is run
 			@Override
 			public void run() {
 				new Gui();
@@ -131,7 +140,7 @@ public class Main {
 
 				}
 			} catch (ArrayIndexOutOfBoundsException e) { 				//catch the error for txt formatting letting user know to tell manager something is wrong
-				Gui.lblLoadingError.setText("LOADING ERROR CONTACT MANAGER");
+				loadingCorrect = false;
 			}
 
 		} catch (IOException e) { 										//if files are not found or missing exit
@@ -142,27 +151,30 @@ public class Main {
 
 		Gui.btnLogin.addActionListener(new ActionListener() { 			//create a button action listener that will run once login is clicked
 			public void actionPerformed(ActionEvent e) {
-				try { 													//try/catch to ensure float number user is inputing is number
-					floatMoney = Double.parseDouble(Gui.txtFloat.getText()); //get the information user inputed about name and float and store as variable
-					userName = Gui.txtName.getText();
-					Gui.frameLogin.setVisible(false);
-					Gui.frame.setVisible(true);
-				} catch (NumberFormatException e1) {
-					Gui.lblFloatError.setText("PLEASE ENTER VALID FLOAT");
-				}
-				try {  													//try/catch to ensure file is not missing, write to file about user's name and floats
+				if(loadingCorrect == true) {
+					try { 													//try/catch to ensure float number user is inputing is number
+						floatMoney = Double.parseDouble(Gui.txtFloat.getText()); //get the information user inputed about name and float and store as variable
+						userName = Gui.txtName.getText();
+						Gui.frameLogin.setVisible(false);
+						Gui.frame.setVisible(true);
+					} catch (NumberFormatException e1) {
+						Gui.lblFloatError.setText("PLEASE ENTER VALID FLOAT");
+					}
+					try {  													//try/catch to ensure file is not missing, write to file about user's name and floats
 
-					fw1 = new FileWriter("users.txt");
-					writeFloats = new PrintWriter(fw1);
+						fw1 = new FileWriter("users.txt");
+						writeFloats = new PrintWriter(fw1);
 
-					writeFloats.println(userName + " : " + floatMoney);
+						writeFloats.println(userName + " : " + floatMoney);
 
-					writeFloats.close();
+						writeFloats.close();
 
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}else
+				Gui.lblLoadingError.setText("LOADING ERROR CONTACT MANAGER");
 			}
 		});
 
@@ -199,7 +211,7 @@ public class Main {
 					} else if (amountInCard > finalCost) { 			//if card balance is more than final cost take out only the final cost from card
 						giftCardUsed = true;
 						amountInCard = amountInCard - finalCost;
-						floatMoney = floatMoney - finalCost;		//as when complete button clicked final cost is added to float, subtract it since gift card will not be in float
+						floatMoney = floatMoney - finalCost;		//when complete button clicked final cost is added to float, subtract gift card value since it will not be in float
 						finalCost = 0;
 						for (int g = 0; g < arrayCards.length; g++) { //go through entire gift card array and change value of how much money in card
 							if (arrayCards[g].cardNum == Long.parseLong(Gui.txtGiftCard.getText())) {
@@ -233,7 +245,7 @@ public class Main {
 					e1.printStackTrace();
 				}
 
-				if (finalCost <= 0) {								//if when using gift card final cost becomes 0 no change given so set toal amount to 0
+				if (finalCost <= 0) {								//if when using gift card final cost becomes 0 no change given so set total amount to 0
 					Gui.lblAmountPay.setText(" $0 ");
 					if(giftCardUsed == true) {
 						System.out.println("There is: " + priceWithDecimal(amountInCard) + " left of the gift card");
@@ -247,7 +259,7 @@ public class Main {
 				if (finalCost <= 0) {								//make sure payment has gone through
 					try {
 
-						fw2 = new FileWriter("users.txt");			//print out to txt file about updated float amounts
+						fw2 = new FileWriter("users.txt");			//print out to text file about updated float amounts
 						writeFloats2 = new PrintWriter(fw2);
 
 						writeFloats2.println(userName + " : " + priceWithDecimal(floatMoney));
@@ -258,7 +270,7 @@ public class Main {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					finalCost = 0;									//reset all variables to prepare for next order
+					finalCost = 0;									//reset all label variables to prepare for next order
 					Gui.lblChange.setText(" ");
 					Gui.txtCouponCode.setText(" ");
 					Gui.txtGiftCard.setText(" ");

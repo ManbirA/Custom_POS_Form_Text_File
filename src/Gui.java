@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
@@ -66,40 +67,45 @@ public class Gui extends JFrame {
 	
 
 	public Gui() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int length = (int)screenSize.getWidth();
+		int height = (int)screenSize.getHeight();
 
 		///////////// BEFORE ORDER //////////////					//add all components to corresponding panels and set location and size and frame layout
 		panelLogin.setBackground(Color.WHITE);
-		frameLogin.setSize(1920, 1080);
+		frameLogin.setSize(length, height);
 		frameLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameLogin.setVisible(true);
 		frameLogin.getContentPane().add(panelLogin);
 		frameLogin.setLocationRelativeTo(null);
 		panelLogin.setLayout(null);
 		
+		lblLoadingError = new JLabel();
 		panelLogin.add(lblLoadingError);
+		lblLoadingError.setBounds(length/2 - 150,height/2 - 200, 300, 25);
 		
 		lblName = new JLabel("Enter Your Name");
 		panelLogin.add(lblName);
-		lblName.setBounds(760,350,100,25);
+		lblName.setBounds(length/2-100,height/2+50,100,25);
 
 		txtName = new JTextField(" ", 10);
-		txtName.setBounds(760, 375, 100, 25);
+		txtName.setBounds(length/2-100,height/2+25,100,25);
 		panelLogin.add(txtName);
 
 		lblFloat = new JLabel("Enter Float ");
-		lblFloat.setBounds(960,350,100,25);
+		lblFloat.setBounds((length/2)+100,height/2+50,100,25);
 		panelLogin.add(lblFloat);
 
 		txtFloat = new JTextField(" ", 10);
-		txtFloat.setBounds(960,375,100,25);
+		txtFloat.setBounds((length/2)+100,height/2+25,100,25);
 		panelLogin.add(txtFloat);
 
 		panelLogin.add(btnLogin);
-		btnLogin.setBounds(860, 450, 100, 25);
+		btnLogin.setBounds(length/2, height/2 + 150, 100, 25);
 		
 		lblFloatError = new JLabel(" ");
 		panelLogin.add(lblFloatError);
-		lblFloatError.setBounds(830,485,200,25);
+		lblFloatError.setBounds(length/2 - 13,height/2 + 175,200,25);
 
 		
 
